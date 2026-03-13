@@ -1,22 +1,30 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import ScrollToTop from './components/ScrollToTop';
-import WhatsAppButton from './components/WhatsAppButton';
-import Home from './pages/Home';
-import About from './pages/About';
-import Products from './pages/Products';
-import Services from './pages/Services';
-import Contact from './pages/Contact';
-import AdminDashboard from './pages/AdminDashboard';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
+import WhatsAppButton from "./components/WhatsAppButton";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Products from "./pages/Products";
+import Services from "./pages/Services";
+import Contact from "./pages/Contact";
+import AdminDashboard from "./pages/AdminDashboard";
 
-function App() {
+const AppLayout = () => {
+  const location = useLocation();
+  const isAdmin = location.pathname.startsWith("/admin");
+
   return (
-    <Router>
+    <>
       <ScrollToTop />
-      <Navbar />
+      {!isAdmin && <Navbar />}
       <AnimatePresence mode="wait">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -27,8 +35,16 @@ function App() {
           <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
       </AnimatePresence>
-      <Footer />
-      <WhatsAppButton />
+      {!isAdmin && <Footer />}
+      {!isAdmin && <WhatsAppButton />}
+    </>
+  );
+};
+
+function App() {
+  return (
+    <Router>
+      <AppLayout />
     </Router>
   );
 }
